@@ -42,27 +42,22 @@ public class DataBase {
         }
     }
 
-    public void insertIntoTable(String tableName, String... values) {
-        try {
-            Statement stmt = connection.createStatement();
-            String query = "INSERT INTO " + tableName + " values ('";
+    public void insertIntoTable(String tableName, String... values) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String query = "INSERT INTO " + tableName + " values ('";
 
-            for (int i = 0; i < values.length - 1; i++) {
-                query += values[i];
-                query += "', '";
-            }
-
-            query += values[values.length - 1] + "');";
-            int a = stmt.executeUpdate(query);
-
-            if (a > 0)
-                System.out.println("additon success");
-            else
-                System.out.println("Failed");
-
-        } catch (SQLException ex) {
-            System.out.println("Exception during insetion");
+        for (int i = 0; i < values.length - 1; i++) {
+            query += values[i];
+            query += "', '";
         }
+
+        query += values[values.length - 1] + "');";
+        int a = stmt.executeUpdate(query);
+
+        if (a > 0)
+            System.out.println("additon success");
+        else
+            System.out.println("Failed");
     }
 
     public void printTable(String tableName) {
@@ -166,5 +161,18 @@ public class DataBase {
         String[] names = new String[i];
         names = columnNames.toArray(names);
         return names;
+    }
+    
+    public String getSingleResult(String tableName, String targetColumn, String whereClause) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String query = "select " + targetColumn + " from " + tableName + " where " + whereClause + ";";
+        ResultSet rs = stmt.executeQuery(query);
+        String result = null; 
+        
+        while(rs.next()) {
+            result = rs.getString(1);
+        }
+        
+        return result;
     }
 }

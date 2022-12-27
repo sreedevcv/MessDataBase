@@ -15,13 +15,18 @@ public class Main extends javax.swing.JFrame {
         addInmate2 = new messdatabase.AddInmate();
         testPanel2 = new messdatabase.TestPanel();
         addProduct1 = new messdatabase.AddProduct();
+        addStock2 = new messdatabase.AddStock();
+        removeStock1 = new messdatabase.RemoveStock();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 700));
 
+        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane1.addTab("tab1", addInmate2);
         jTabbedPane1.addTab("tab2", testPanel2);
         jTabbedPane1.addTab("tab3", addProduct1);
+        jTabbedPane1.addTab("tab4", addStock2);
+        jTabbedPane1.addTab("tab5", removeStock1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,7 +78,9 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private messdatabase.AddInmate addInmate2;
     private messdatabase.AddProduct addProduct1;
+    private messdatabase.AddStock addStock2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private messdatabase.RemoveStock removeStock1;
     private messdatabase.TestPanel testPanel2;
     // End of variables declaration//GEN-END:variables
 }

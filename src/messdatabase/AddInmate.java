@@ -6,7 +6,7 @@ public class AddInmate extends javax.swing.JPanel {
 
     public AddInmate() {
         initComponents();
-    }
+    } 
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -123,7 +123,6 @@ public class AddInmate extends javax.swing.JPanel {
             char block = blockComboBox.getSelectedItem().toString().charAt(0);
             int roomNo = Integer.parseInt(roomNoTextField.getText().toString());
             clearAllFields();
-            
         } catch(NumberFormatException nfe) {
             System.err.println("Exception  during parsing int in room no field");
             JOptionPane.showMessageDialog(this, "Enter data in correct format");
