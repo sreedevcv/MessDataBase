@@ -4,9 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DataBase {
-    private final String dbUrl = "jdbc:postgresql://localhost/testdb2";
-    private final String user = "dbmsprj";
-    private final String pass = "secret";
     private Connection connection = null;
     
     public static enum Tables {
@@ -16,30 +13,9 @@ public class DataBase {
         Stocks,
         Outgoing
     };
-
-    public void establishConnection() {
-
-        try {
-            connection = DriverManager.getConnection(dbUrl, user, pass);
-        } catch (SQLException e) {
-            System.out.println("Exception during establishing database connection");
-        }
-        if (connection != null) {
-            System.out.println("Connected to db");
-        } else {
-            System.out.println("Could not establish connection");
-        }
-    }
-
-    public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Connection closed");
-            }
-        } catch (SQLException ex) {
-            System.out.println("Excepition during closing connection");
-        }
+    
+    public DataBase(Connection c) {
+        connection = c;
     }
 
     public void insertIntoTable(String tableName, String... values) throws SQLException {
@@ -174,5 +150,13 @@ public class DataBase {
         }
         
         return result;
+    }
+    
+    public ResultSet getSingleRow(String tableName, String whereClause) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String query = "select * from " + tableName + " where " + whereClause + ";";
+        ResultSet rs = stmt.executeQuery(query);
+        
+        return rs;
     }
 }
