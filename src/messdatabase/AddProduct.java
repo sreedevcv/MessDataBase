@@ -1,10 +1,13 @@
 package messdatabase;
 
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class AddProduct extends javax.swing.JPanel {
-
+    public MessDataBase mdb;
+    
     public AddProduct() {
+        mdb = new MessDataBase();
         initComponents();
     }
 
@@ -95,10 +98,14 @@ public class AddProduct extends javax.swing.JPanel {
         try {
             String name = productNameTextField.getText();
             int price = Integer.parseInt(priceTextField.getText().toString());
+            mdb.addNewProduct(name, price);
             clearAllFields();
         } catch(NumberFormatException nfe) {
             System.err.println("Exception  during parsing int in price field");
             JOptionPane.showMessageDialog(this, "Enter data in correct format");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Uanble to add data to database");
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_addProductBtnActionPerformed
 

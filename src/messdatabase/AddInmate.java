@@ -1,12 +1,15 @@
 package messdatabase;
 
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class AddInmate extends javax.swing.JPanel {
-
+    public MessDataBase mdb;
+    
     public AddInmate() {
+        mdb = new MessDataBase();
         initComponents();
-    } 
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -122,10 +125,14 @@ public class AddInmate extends javax.swing.JPanel {
             String admnNo = admnNoTextField.getText();
             char block = blockComboBox.getSelectedItem().toString().charAt(0);
             int roomNo = Integer.parseInt(roomNoTextField.getText().toString());
+            mdb.addNewInmate(name, block, roomNo, admnNo);
             clearAllFields();
         } catch(NumberFormatException nfe) {
             System.err.println("Exception  during parsing int in room no field");
             JOptionPane.showMessageDialog(this, "Enter data in correct format");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Uanble to add data to database");
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_addInmateBtnActionPerformed
 

@@ -4,18 +4,46 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DataBase {
-    private Connection connection = null;
-    
-    public static enum Tables {
-        Inmates,
-        Products,
-        Workers,
-        Stocks,
-        Outgoing
+
+    public Connection connection = null;
+    private final String dbUrl = "jdbc:postgresql://localhost/mess";
+    private final String user = "dbmsprj";
+    private final String pass = "secret";
+
+    public static String[] Tables = {
+        "Inmates",
+        "Products",
+        "Workers",
+        "Stocks",
+        "Outgoing"
     };
-    
-    public DataBase(Connection c) {
-        connection = c;
+
+//    public DataBase(Connection c) {
+//        connection = c;
+//    }
+    public void establishConnection() {
+        try {
+            connection = DriverManager.getConnection(dbUrl, user, pass);
+        } catch (SQLException e) {
+            System.out.println("Exception during establishing database connection");
+            e.printStackTrace();
+        }
+        if (connection != null) {
+            System.out.println("Connected to db");
+        } else {
+            System.out.println("Could not establish connection");
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Connection closed");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Excepition during closing connection");
+        }
     }
 
     public void insertIntoTable(String tableName, String... values) throws SQLException {
@@ -28,12 +56,14 @@ public class DataBase {
         }
 
         query += values[values.length - 1] + "');";
+        System.out.println(query);
         int a = stmt.executeUpdate(query);
 
-        if (a > 0)
+        if (a > 0) {
             System.out.println("additon success");
-        else
+        } else {
             System.out.println("Failed");
+        }
     }
 
     public void printTable(String tableName) {
@@ -48,7 +78,7 @@ public class DataBase {
             System.out.println();
 
             while (rs.next()) {
-                for(int i = 0; i < rsmd.getColumnCount(); i++) {
+                for (int i = 0; i < rsmd.getColumnCount(); i++) {
                     System.out.print(rs.getString(i + 1) + "\t");
                 }
             }
@@ -106,7 +136,7 @@ public class DataBase {
         try {
             Statement stmt = connection.createStatement();
             String query = "SELECT * FROM " + tableName + " ORDER BY " + orderByColumn + " " + ascOrDesc + " ;";
-            System.out.println(query);
+//            System.out.println(query);
             rs = stmt.executeQuery(query);
         } catch (SQLException ex) {
             System.out.println("Exception during select(printing all data)");
@@ -114,7 +144,6 @@ public class DataBase {
 
         return rs;
     }
-
 
     public String[] getAllColums(String tableName) {
         ArrayList<String> columnNames = new ArrayList<>();
@@ -124,13 +153,13 @@ public class DataBase {
             Statement stmt = connection.createStatement();
             String query = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + tableName.toLowerCase() + "';";
             ResultSet rs = stmt.executeQuery(query);
-            
+
             System.out.println(query);
-            while(rs.next()) {
+            while (rs.next()) {
                 columnNames.add(rs.getString(1));
                 i++;
             }
-            
+
         } catch (SQLException ex) {
             System.out.println("Exception during select(printing all data)");
         }
@@ -138,25 +167,37 @@ public class DataBase {
         names = columnNames.toArray(names);
         return names;
     }
-    
+
     public String getSingleResult(String tableName, String targetColumn, String whereClause) throws SQLException {
         Statement stmt = connection.createStatement();
         String query = "select " + targetColumn + " from " + tableName + " where " + whereClause + ";";
+        System.out.println(query);
         ResultSet rs = stmt.executeQuery(query);
-        String result = null; 
-        
-        while(rs.next()) {
+        String result = null;
+
+        while (rs.next()) {
             result = rs.getString(1);
         }
-        
+
         return result;
     }
-    
+
     public ResultSet getSingleRow(String tableName, String whereClause) throws SQLException {
         Statement stmt = connection.createStatement();
         String query = "select * from " + tableName + " where " + whereClause + ";";
+        System.out.println(query);
         ResultSet rs = stmt.executeQuery(query);
-        
+
         return rs;
+    }
+    
+    public String getBillAmount(String admnNo, int month) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String query = "select calc(" + String.valueOf(month) + ", '" +  admnNo+ "');";
+        ResultSet rs = stmt.executeQuery(query);
+        rs.next();
+        float amt = rs.getFloat(1);
+        
+        return String.valueOf(amt);
     }
 }

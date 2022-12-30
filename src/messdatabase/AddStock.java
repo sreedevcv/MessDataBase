@@ -1,16 +1,19 @@
 package messdatabase;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class AddStock extends javax.swing.JPanel {
-    private MessDataBase mdb;
-    
+
+    private final MessDataBase mdb;
+    private String[] plist;
+
     public AddStock() {
+        mdb = new MessDataBase();
+        mdb.establishConnection();
         initComponents();
-//        mdb = new MessDataBase();
-        ArrayList<String> list = new ArrayList<>();
-        String[] arr = new String[list.size()];
-        arr = list.toArray(arr);
+        loadProducts();
     }
 
     @SuppressWarnings("unchecked")
@@ -22,7 +25,7 @@ public class AddStock extends javax.swing.JPanel {
         addItemBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        quantityField = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
@@ -46,12 +49,6 @@ public class AddStock extends javax.swing.JPanel {
 
         jLabel3.setText("Quantity");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -74,9 +71,9 @@ public class AddStock extends javax.swing.JPanel {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jComboBox1, 0, 166, Short.MAX_VALUE))))
-                .addContainerGap(936, Short.MAX_VALUE))
+                            .addComponent(jComboBox1, 0, 230, Short.MAX_VALUE)
+                            .addComponent(quantityField))))
+                .addContainerGap(872, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,7 +86,7 @@ public class AddStock extends javax.swing.JPanel {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(quantityField, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 419, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -99,21 +96,44 @@ public class AddStock extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void clearAllFields() {
+    public void loadProducts() {
+        ArrayList<String> list;
         
+        try {
+            list = mdb.getProductList();
+        } catch (SQLException ex) {
+            System.out.println("No products");
+            list = new ArrayList<>();
+        }
+        
+        plist = new String[list.size()];
+        plist = list.toArray(plist);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(plist));
     }
-    
+
+    public void clearAllFields() {
+        jComboBox1.setSelectedIndex(0);
+        quantityField.setText("");
+    }
+
     private void addItemCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemCancelBtnActionPerformed
         clearAllFields();
     }//GEN-LAST:event_addItemCancelBtnActionPerformed
 
     private void addItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemBtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            String item = jComboBox1.getSelectedItem().toString();
+            int quantity = Integer.parseInt(quantityField.getText());
+            mdb.addNewItemToStocks(item, quantity);
+            clearAllFields();
+        } catch (NumberFormatException nfe) {
+            System.err.println("Exception  during parsing int in price field");
+            JOptionPane.showMessageDialog(this, "Enter data in correct format");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Uanble to add data to database");
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_addItemBtnActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -123,6 +143,6 @@ public class AddStock extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField quantityField;
     // End of variables declaration//GEN-END:variables
 }
