@@ -4,8 +4,11 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class AddProduct extends javax.swing.JPanel {
+
     public MessDataBase mdb;
-    
+    AddStock addStock;
+    RemoveStock removeStock;
+
     public AddProduct() {
         mdb = new MessDataBase();
         initComponents();
@@ -93,14 +96,16 @@ public class AddProduct extends javax.swing.JPanel {
         priceTextField.setText("");
         productNameTextField.setText("");
     }
-    
+
     private void addProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductBtnActionPerformed
         try {
             String name = productNameTextField.getText();
             int price = Integer.parseInt(priceTextField.getText().toString());
             mdb.addNewProduct(name, price);
             clearAllFields();
-        } catch(NumberFormatException nfe) {
+            addStock.loadProducts();
+            removeStock.loadProducts();
+        } catch (NumberFormatException nfe) {
             System.err.println("Exception  during parsing int in price field");
             JOptionPane.showMessageDialog(this, "Enter data in correct format");
         } catch (SQLException ex) {

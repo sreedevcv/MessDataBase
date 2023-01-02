@@ -4,16 +4,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
+
 public class AddStock extends javax.swing.JPanel {
 
-    private final MessDataBase mdb;
-    private String[] plist;
+    public MessDataBase mdb;
+    private String[] plist;    
 
     public AddStock() {
         mdb = new MessDataBase();
-        mdb.establishConnection();
         initComponents();
-        loadProducts();
     }
 
     @SuppressWarnings("unchecked")

@@ -9,15 +9,12 @@ import javax.swing.JOptionPane;
 
 public class RemoveStock extends javax.swing.JPanel {
 
-    private MessDataBase mdb;
+    public MessDataBase mdb;
     private String[] plist;
 
     public RemoveStock() {
         mdb = new MessDataBase();
-        mdb.establishConnection();
         initComponents();
-        loadProducts();
-        datePicker1.setDateToToday();
     }
 
     @SuppressWarnings("unchecked")

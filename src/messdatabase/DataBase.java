@@ -18,9 +18,6 @@ public class DataBase {
         "Outgoing"
     };
 
-//    public DataBase(Connection c) {
-//        connection = c;
-//    }
     public void establishConnection() {
         try {
             connection = DriverManager.getConnection(dbUrl, user, pass);
@@ -123,7 +120,9 @@ public class DataBase {
         ResultSet rs = null;
         try {
             Statement stmt = connection.createStatement();
+            System.out.println("SELECT * FROM " + tableName + ";");
             rs = stmt.executeQuery("SELECT * FROM " + tableName + ";");
+
         } catch (SQLException ex) {
             System.out.println("Exception during select(printing all data)");
         }
@@ -136,7 +135,7 @@ public class DataBase {
         try {
             Statement stmt = connection.createStatement();
             String query = "SELECT * FROM " + tableName + " ORDER BY " + orderByColumn + " " + ascOrDesc + " ;";
-//            System.out.println(query);
+            System.out.println(query);
             rs = stmt.executeQuery(query);
         } catch (SQLException ex) {
             System.out.println("Exception during select(printing all data)");
@@ -152,6 +151,8 @@ public class DataBase {
         try {
             Statement stmt = connection.createStatement();
             String query = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + tableName.toLowerCase() + "';";
+            System.out.println(query);
+
             ResultSet rs = stmt.executeQuery(query);
 
             System.out.println(query);
@@ -190,14 +191,16 @@ public class DataBase {
 
         return rs;
     }
-    
+
     public String getBillAmount(String admnNo, int month) throws SQLException {
         Statement stmt = connection.createStatement();
-        String query = "select calc(" + String.valueOf(month) + ", '" +  admnNo+ "');";
+        String query = "select calc(" + String.valueOf(month) + ", '" + admnNo + "');";
+        System.out.println(query);
+
         ResultSet rs = stmt.executeQuery(query);
         rs.next();
         float amt = rs.getFloat(1);
-        
+
         return String.valueOf(amt);
     }
 }

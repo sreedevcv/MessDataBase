@@ -9,15 +9,12 @@ import java.sql.SQLException;
 public class ViewTables extends javax.swing.JPanel {
 
     private String selectedTable = "inmates";
-    MessDataBase mdb;
+    public MessDataBase mdb;
 
     public ViewTables() {
         mdb = new MessDataBase();
-        mdb.establishConnection();
         initComponents();
         tableSelectionBox.setModel(new javax.swing.DefaultComboBoxModel<>(DataBase.Tables));
-        updateColumnSelectionBox();
-        createNewJTable();
     }
 
     @SuppressWarnings("unchecked")
@@ -40,7 +37,8 @@ public class ViewTables extends javax.swing.JPanel {
 
         columnSelectionBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jLabel1.setText("Tables");
 
         viewBtn.setText("View");
         viewBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +90,7 @@ public class ViewTables extends javax.swing.JPanel {
                     .addComponent(viewBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

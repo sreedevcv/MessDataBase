@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import org.postgresql.util.PSQLException;
 
 public class MessDataBase extends DataBase {
 
@@ -49,7 +50,8 @@ public class MessDataBase extends DataBase {
         stmt.execute("insert into Outgoing (PId, outdate, quantity) values ('" + pid + "', '" + date + "', " + String.valueOf(quantity) + ");");
     }
 
-    public String[] generatePreview(String admnNo, int month) throws SQLException {
+
+    public String[] generatePreview(String admnNo, int month) throws SQLException, PSQLException {
         ResultSet details = this.getSingleRow("Inmates", "admnNo = '" + admnNo + "'");
 
         details.next();
