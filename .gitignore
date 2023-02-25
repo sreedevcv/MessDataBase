@@ -2,3 +2,4 @@ build/
 dist/
 *.form
 *.class
+run.sh
