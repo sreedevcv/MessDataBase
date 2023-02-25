@@ -3,7 +3,6 @@ package messdatabase;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -32,6 +31,98 @@ public class CalculateMessBill extends javax.swing.JPanel {
         mdb = new MessDataBase();
         initComponents();
         datePicker1.setDateToToday();
+    }
+
+    public void generateMessBill(String[] data) throws NullPointerException {
+        try {
+            LocalDate d = datePicker1.getDate();
+            String dateString = " " + d.getMonth().toString().substring(0, 3) + d.getYear() ;
+            System.out.println(dateString);
+            Document document = new Document();
+            File f = new File("/home/sreedev/Downloads/bills/" + data[0] + dateString + ".pdf");
+            PdfWriter.getInstance(document, new FileOutputStream(f));
+
+            document.open();
+            Font font1 = FontFactory.getFont(FontFactory.TIMES_BOLD, 18, BaseColor.RED);
+            Font font2 = FontFactory.getFont(FontFactory.TIMES, 10, BaseColor.BLACK);
+            Paragraph p1 = new Paragraph("Mess Bill For " + date.getMonth() + " " + date.getYear(), font1);
+            String details = "";
+            details += "\nName          : " + data[0] + "\n";
+            details += "Room No.   : " + data[1] + "\n";
+            details += "Block          : " + data[2] + "\n";
+            details += "Attendence : " + data[3] + "\n";
+            details += "Total bill     : " + data[4] + "\n";
+            Paragraph p2 = new Paragraph(details, font2);
+
+            document.add(p1);
+            document.add(p2);
+
+            document.close();
+
+        } catch (FileNotFoundException ex) {
+            System.err.println("PDF error: FOF");
+        } catch (DocumentException ex) {
+            System.err.println("PDF error: FOF");
+
+        }
+    }
+
+    public void generateReport() {
+        try {
+            LocalDate d = datePicker1.getDate();
+            Document document = new Document();
+            String dateString = " " + d.getMonth().toString().substring(0, 3) + d.getYear() ;
+            System.out.println(dateString);
+            File f = new File("/home/sreedev/Downloads/bills/REPORT" + dateString + ".pdf");
+            PdfWriter.getInstance(document, new FileOutputStream(f));
+            String[] colHeader = {"Name", "Room", "Block", "Attendence", "Amount"};
+
+            String reportHeader = "MESS BILL FOR " + d.getMonth() + " " + d.getYear() + "\n";
+            Font font = FontFactory.getFont(FontFactory.TIMES_BOLD, 18, BaseColor.RED);
+            Paragraph p = new Paragraph(reportHeader, font);
+            PdfPTable table = new PdfPTable(5);
+            float sum = 0;
+
+            font.setSize((float) 15);
+            table.setWidthPercentage((float) 95.0);
+            document.open();
+
+            Stream.of(colHeader)
+                    .forEach(columnTitle -> {
+                        PdfPCell header = new PdfPCell();
+                        header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        header.setBorderWidth(1);
+                        header.setPhrase(new Phrase(columnTitle, font));
+                        table.addCell(header);
+                    });
+
+            Iterator<String> iter = mdb.getInmateList().iterator();
+            String[] row;
+
+            while (iter.hasNext()) {
+                row = mdb.generatePreview(iter.next(), d.getMonthValue());
+                for (String s : row) {
+                    table.addCell(s);
+                }
+                sum += Float.parseFloat(row[4]);
+            }
+
+            document.add(p);
+            document.add(new Paragraph("\n\n"));
+            document.add(table);
+            font.setColor(BaseColor.BLACK);
+            document.add(new Paragraph("\n\nTotal cost for the month:"));
+            font.setColor(BaseColor.RED);
+            document.add(new Paragraph("Rs. " + String.valueOf(sum), font));
+            document.close();
+
+        } catch (FileNotFoundException ex) {
+            System.err.println("PDF error: FOF");
+        } catch (DocumentException ex) {
+            System.err.println("PDF error: FOF");
+        } catch (SQLException ex) {
+            Logger.getLogger(CalculateMessBill.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -226,97 +317,6 @@ public class CalculateMessBill extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_billGenerateBtnActionPerformed
 
-    public void generateMessBill(String[] data) throws NullPointerException {
-        try {
-            LocalDate d = datePicker1.getDate();
-            String dateString = " " + d.getMonth().toString().substring(0, 3) + d.getYear() ;
-            System.out.println(dateString);
-            Document document = new Document();
-            File f = new File("/home/sreedev/Downloads/bills/" + data[0] + dateString + ".pdf");
-            PdfWriter.getInstance(document, new FileOutputStream(f));
-
-            document.open();
-            Font font1 = FontFactory.getFont(FontFactory.TIMES_BOLD, 18, BaseColor.RED);
-            Font font2 = FontFactory.getFont(FontFactory.TIMES, 10, BaseColor.BLACK);
-            Paragraph p1 = new Paragraph("Mess Bill For " + date.getMonth() + " " + date.getYear(), font1);
-            String details = "";
-            details += "\nName          : " + data[0] + "\n";
-            details += "Room No.   : " + data[1] + "\n";
-            details += "Block          : " + data[2] + "\n";
-            details += "Attendence : " + data[3] + "\n";
-            details += "Total bill     : " + data[4] + "\n";
-            Paragraph p2 = new Paragraph(details, font2);
-
-            document.add(p1);
-            document.add(p2);
-
-            document.close();
-
-        } catch (FileNotFoundException ex) {
-            System.err.println("PDF error: FOF");
-        } catch (DocumentException ex) {
-            System.err.println("PDF error: FOF");
-
-        }
-    }
-
-    public void generateReport() {
-        try {
-            LocalDate d = datePicker1.getDate();
-            Document document = new Document();
-            String dateString = " " + d.getMonth().toString().substring(0, 3) + d.getYear() ;
-            System.out.println(dateString);
-            File f = new File("/home/sreedev/Downloads/bills/REPORT" + dateString + ".pdf");
-            PdfWriter.getInstance(document, new FileOutputStream(f));
-            String[] colHeader = {"Name", "Room", "Block", "Attendence", "Amount"};
-
-            String reportHeader = "MESS BILL FOR " + d.getMonth() + " " + d.getYear() + "\n";
-            Font font = FontFactory.getFont(FontFactory.TIMES_BOLD, 18, BaseColor.RED);
-            Paragraph p = new Paragraph(reportHeader, font);
-            PdfPTable table = new PdfPTable(5);
-            float sum = 0;
-
-            font.setSize((float) 15);
-            table.setWidthPercentage((float) 95.0);
-            document.open();
-
-            Stream.of(colHeader)
-                    .forEach(columnTitle -> {
-                        PdfPCell header = new PdfPCell();
-                        header.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                        header.setBorderWidth(1);
-                        header.setPhrase(new Phrase(columnTitle, font));
-                        table.addCell(header);
-                    });
-
-            Iterator<String> iter = mdb.getInmateList().iterator();
-            String[] row;
-
-            while (iter.hasNext()) {
-                row = mdb.generatePreview(iter.next(), d.getMonthValue());
-                for (String s : row) {
-                    table.addCell(s);
-                }
-                sum += Float.parseFloat(row[4]);
-            }
-
-            document.add(p);
-            document.add(new Paragraph("\n\n"));
-            document.add(table);
-            font.setColor(BaseColor.BLACK);
-            document.add(new Paragraph("\n\nTotal cost for the month:"));
-            font.setColor(BaseColor.RED);
-            document.add(new Paragraph("Rs. " + String.valueOf(sum), font));
-            document.close();
-
-        } catch (FileNotFoundException ex) {
-            System.err.println("PDF error: FOF");
-        } catch (DocumentException ex) {
-            System.err.println("PDF error: FOF");
-        } catch (SQLException ex) {
-            Logger.getLogger(CalculateMessBill.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField admnNoField;

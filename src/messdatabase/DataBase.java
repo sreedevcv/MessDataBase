@@ -10,7 +10,7 @@ public class DataBase {
     private final String user = "dbmsprj";
     private final String pass = "secret";
 
-    public static String[] Tables = {
+    public static final String[] Tables = {
         "Inmates",
         "Products",
         "Workers",
@@ -87,10 +87,9 @@ public class DataBase {
 
     public void updateTable(String tableName, String columnName, String newValue, String condition) {
         try {
-            Statement stmt = connection.createStatement();
             String updateQuery = "UPDATE " + tableName + " SET " + columnName + " = '" + newValue + "' WHERE "
                     + condition + " ;";
-            int a = stmt.executeUpdate(updateQuery);
+            int a = connection.createStatement().executeUpdate(updateQuery);
             if (a > 0) {
                 System.out.println("Updation of " + tableName + " successfull");
             } else {
@@ -103,9 +102,9 @@ public class DataBase {
 
     public void deleteRows(String tableName, String condition) {
         try {
-            Statement stmt = connection.createStatement();
             String deleteQuery = "DELETE FROM " + tableName + " WHERE " + condition + " ;";
-            int a = stmt.executeUpdate(deleteQuery);
+            System.out.println(deleteQuery);
+            int a = connection.createStatement().executeUpdate(deleteQuery);
             if (a > 0) {
                 System.out.println("Deletion in " + tableName + " successfull");
             } else {
@@ -119,9 +118,9 @@ public class DataBase {
     public ResultSet getEntireRows(String tableName) {
         ResultSet rs = null;
         try {
-            Statement stmt = connection.createStatement();
-            System.out.println("SELECT * FROM " + tableName + ";");
-            rs = stmt.executeQuery("SELECT * FROM " + tableName + ";");
+            String query = "SELECT * FROM " + tableName + ";";
+            System.out.println(query);
+            rs = connection.createStatement().executeQuery(query);
 
         } catch (SQLException ex) {
             System.out.println("Exception during select(printing all data)");
@@ -133,10 +132,9 @@ public class DataBase {
     public ResultSet getEntireRows(String tableName, String orderByColumn, String ascOrDesc) {
         ResultSet rs = null;
         try {
-            Statement stmt = connection.createStatement();
             String query = "SELECT * FROM " + tableName + " ORDER BY " + orderByColumn + " " + ascOrDesc + " ;";
             System.out.println(query);
-            rs = stmt.executeQuery(query);
+            rs = connection.createStatement().executeQuery(query);
         } catch (SQLException ex) {
             System.out.println("Exception during select(printing all data)");
         }
@@ -149,11 +147,10 @@ public class DataBase {
         int i = 0;
 
         try {
-            Statement stmt = connection.createStatement();
             String query = "select column_name from INFORMATION_SCHEMA.COLUMNS where table_name = '" + tableName.toLowerCase() + "';";
             System.out.println(query);
 
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = connection.createStatement().executeQuery(query);
 
             System.out.println(query);
             while (rs.next()) {

@@ -22,8 +22,8 @@ public class Main extends javax.swing.JFrame {
      */
     
     private void init() {
-        int count = jTabbedPane1.getTabCount();
-        String name;
+        // int count = jTabbedPane1.getTabCount();
+        // String name;
         
         jTabbedPane1.removeAll();
         jTabbedPane1.addTab("Inmates", addInmate1);
@@ -50,28 +50,28 @@ public class Main extends javax.swing.JFrame {
         
         this.setTitle("Mess Inventory Management System");
 
-//        jTabbedPane1.setComponentAt(0, addInmate1);
-//        jTabbedPane1.setTabComponentAt(1, addProduct1);
-//        jTabbedPane1.setTabComponentAt(2, addStock1);
-//        jTabbedPane1.setTabComponentAt(3, removeStock1);
-//        jTabbedPane1.setTabComponentAt(4, calculateMessBill1);
-//        jTabbedPane1.setTabComponentAt(5, viewTables1);
-//        
-//        for (int i = 0; i < count; i++) {
-//            name = jTabbedPane1.getComponent(i).getClass().toString();
-//            if (name.equals("class messdatabase.AddProduct")) 
-//                jTabbedPane1.setTitleAt(i, "Products");
-//            else if (name.equals("class messdatabase.CalculateMessBill")) 
-//                jTabbedPane1.setTitleAt(i, "Mess Bill");
-//            else if (name.equals("class messdatabase.AddInmate")) 
-//                jTabbedPane1.setTitleAt(i, "Inmates");
-//            else if (name.equals("class messdatabase.ViewTables")) 
-//                jTabbedPane1.setTitleAt(i, "Tables");
-//            else if (name.equals("class messdatabase.RemoveStock")) 
-//                jTabbedPane1.setTitleAt(i, "Remove Stock");
-//            else if (name.equals("class messdatabase.AddStock")) 
-//                jTabbedPane1.setTitleAt(i, "Add Stock");
-//        }
+    //    jTabbedPane1.setComponentAt(0, addInmate1);
+    //    jTabbedPane1.setTabComponentAt(1, addProduct1);
+    //    jTabbedPane1.setTabComponentAt(2, addStock1);
+    //    jTabbedPane1.setTabComponentAt(3, removeStock1);
+    //    jTabbedPane1.setTabComponentAt(4, calculateMessBill1);
+    //    jTabbedPane1.setTabComponentAt(5, viewTables1);
+       
+    //    for (int i = 0; i < count; i++) {
+    //        name = jTabbedPane1.getComponent(i).getClass().toString();
+    //        if (name.equals("class messdatabase.AddProduct")) 
+    //            jTabbedPane1.setTitleAt(i, "Products");
+    //        else if (name.equals("class messdatabase.CalculateMessBill")) 
+    //            jTabbedPane1.setTitleAt(i, "Mess Bill");
+    //        else if (name.equals("class messdatabase.AddInmate")) 
+    //            jTabbedPane1.setTitleAt(i, "Inmates");
+    //        else if (name.equals("class messdatabase.ViewTables")) 
+    //            jTabbedPane1.setTitleAt(i, "Tables");
+    //        else if (name.equals("class messdatabase.RemoveStock")) 
+    //            jTabbedPane1.setTitleAt(i, "Remove Stock");
+    //        else if (name.equals("class messdatabase.AddStock")) 
+    //            jTabbedPane1.setTitleAt(i, "Add Stock");
+    //    }
     }
 
     @SuppressWarnings("unchecked")

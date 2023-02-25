@@ -3,18 +3,12 @@ package messdatabase;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import org.postgresql.util.PSQLException;
 
 public class MessDataBase extends DataBase {
 
     public void addNewInmate(String inmateName, char block, int roomNo, String admnNo) throws SQLException {
         this.insertIntoTable("Inmates", admnNo, inmateName, String.valueOf(block), String.valueOf(roomNo));
-    }
-
-    public void addNewProduct(String PName, int price) throws SQLException {
-        Statement stmt = super.connection.createStatement();
-        stmt.execute("insert into products (pname, price) values ('" + PName + "', " + String.valueOf(price) + ");");
     }
 
     public ArrayList<String> getProductList() throws SQLException {
@@ -44,12 +38,22 @@ public class MessDataBase extends DataBase {
         this.insertIntoTable("Stocks", pidStr, String.valueOf(quantity));
     }
 
-    public void removeStock(String pName, int quantity, String date) throws SQLException {
-        String pid = this.getSingleResult("Products", "PId", "PName = '" + pName + "'");
-        Statement stmt = super.connection.createStatement();
-        stmt.execute("insert into Outgoing (PId, outdate, quantity) values ('" + pid + "', '" + date + "', " + String.valueOf(quantity) + ");");
+    public void addNewProduct(String PName, int price) throws SQLException {
+        String query = "insert into products (pname, price) values ('" + PName + "', " + String.valueOf(price) + ");";
+        System.out.println(query);
+        super.connection
+            .createStatement()
+            .execute(query);
     }
 
+    public void removeStock(String pName, int quantity, String date) throws SQLException {
+        String pid = this.getSingleResult("Products", "PId", "PName = '" + pName + "'");
+        String query = "insert into Outgoing (PId, outdate, quantity) values ('" + pid + "', '" + date + "', " + String.valueOf(quantity) + ");";
+        System.out.println(query);
+        super.connection
+                .createStatement()
+                .execute(query);
+    }
 
     public String[] generatePreview(String admnNo, int month) throws SQLException, PSQLException {
         ResultSet details = this.getSingleRow("Inmates", "admnNo = '" + admnNo + "'");
@@ -58,15 +62,15 @@ public class MessDataBase extends DataBase {
         if (details != null) {
 
             String[] preview = new String[5];
-            preview[0] = details.getString(2);  // Name
-            preview[1] = details.getString(4);  // Room No.
-            preview[2] = details.getString(3);  // Block
-            preview[3] = details.getString(5);  // Attendence
-            preview[4] = this.getBillAmount(admnNo, month);  // Bill Amount
+            preview[0] = details.getString(2);              // Name
+            preview[1] = details.getString(4);              // Room No.
+            preview[2] = details.getString(3);              // Block
+            preview[3] = details.getString(5);              // Attendence
+            preview[4] = this.getBillAmount(admnNo, month);   // Bill Amount
             return preview;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public ArrayList<String[]> generateBillDetailsForAll() throws SQLException {
