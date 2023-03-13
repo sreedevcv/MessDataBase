@@ -11,20 +11,8 @@ public class Main extends javax.swing.JFrame {
 
         init();
     }
-
-    /*
-    class messdatabase.AddProduct
-    class messdatabase.CalculateMessBill
-    class messdatabase.AddInmate
-    class messdatabase.ViewTables
-    class messdatabase.RemoveStock
-    class messdatabase.AddStock
-     */
     
     private void init() {
-        // int count = jTabbedPane1.getTabCount();
-        // String name;
-        
         jTabbedPane1.removeAll();
         jTabbedPane1.addTab("Inmates", addInmate1);
         jTabbedPane1.addTab("Products", addProduct1);
@@ -49,29 +37,6 @@ public class Main extends javax.swing.JFrame {
         viewTables1.createNewJTable();
         
         this.setTitle("Mess Inventory Management System");
-
-    //    jTabbedPane1.setComponentAt(0, addInmate1);
-    //    jTabbedPane1.setTabComponentAt(1, addProduct1);
-    //    jTabbedPane1.setTabComponentAt(2, addStock1);
-    //    jTabbedPane1.setTabComponentAt(3, removeStock1);
-    //    jTabbedPane1.setTabComponentAt(4, calculateMessBill1);
-    //    jTabbedPane1.setTabComponentAt(5, viewTables1);
-       
-    //    for (int i = 0; i < count; i++) {
-    //        name = jTabbedPane1.getComponent(i).getClass().toString();
-    //        if (name.equals("class messdatabase.AddProduct")) 
-    //            jTabbedPane1.setTitleAt(i, "Products");
-    //        else if (name.equals("class messdatabase.CalculateMessBill")) 
-    //            jTabbedPane1.setTitleAt(i, "Mess Bill");
-    //        else if (name.equals("class messdatabase.AddInmate")) 
-    //            jTabbedPane1.setTitleAt(i, "Inmates");
-    //        else if (name.equals("class messdatabase.ViewTables")) 
-    //            jTabbedPane1.setTitleAt(i, "Tables");
-    //        else if (name.equals("class messdatabase.RemoveStock")) 
-    //            jTabbedPane1.setTitleAt(i, "Remove Stock");
-    //        else if (name.equals("class messdatabase.AddStock")) 
-    //            jTabbedPane1.setTitleAt(i, "Add Stock");
-    //    }
     }
 
     @SuppressWarnings("unchecked")
@@ -123,11 +88,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_addStock1ComponentShown
 
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

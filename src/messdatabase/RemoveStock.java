@@ -4,9 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-// What would happpen if the same item was removed more 
-// than once  on the same day (primary key violation on outgoing???)
-
 public class RemoveStock extends javax.swing.JPanel {
 
     public MessDataBase mdb;

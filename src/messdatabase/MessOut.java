@@ -99,17 +99,6 @@ public class MessOut extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_applyBtnActionPerformed
 
-    /*
-        select att
-    into InmateAtt
-    from Attendence
-    where AdmnNo = $3 and month = $1 and year = $2;
-
-    select sum(att)
-    into TotalAtt
-    from Attendence
-    where month = $1 and year = $2;
-    */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField admnField;

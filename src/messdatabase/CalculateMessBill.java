@@ -298,7 +298,6 @@ public class CalculateMessBill extends javax.swing.JPanel {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "No such Inmate");
-//            ex.printStackTrace();
         } catch (NullPointerException npe) {
             JOptionPane.showMessageDialog(this, "No such Inmate 2");
         }
